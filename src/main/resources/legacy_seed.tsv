@@ -1,0 +1,18 @@
+# Legacy asset-management export (tab separated) — imported on first run only
+ASTID	DESC	CLASS	CATEGORY	MAKE	SERIAL	LOCTYPE	PURDATE	COND	NOTES
+AST-0001	Digital Oscilloscope 100MHz 2CH	ELECTRONIC	Oscilloscope	Rigol	DS1054Z-1234	Electronics Lab A, Bench 3	2022-08-14	GOOD	4 probes included
+AST-0002	Digital Oscilloscope 70MHz 2CH	ELECTRONIC	Oscilloscope	Hantek	HSO6022-8891	Electronics Lab A, Bench 4	2021-03-02	FAIR	Case damaged
+AST-0003	Desktop Digital Multimeter	ELECTRONIC	Digital Multimeter	Fluke	FLK-17B-55120	Electronics Lab A, Cabinet 1	2020-11-20	GOOD	Rotary switch stiff
+AST-0004	Handheld Digital Multimeter	ELECTRONIC	Digital Multimeter	uni-T	UT33D-77104	Workshop, Drawer 2	2023-01-18	EXCELLENT
+AST-0005	Function Generator 25MHz	ELECTRONIC	Function Generator	Rigol	DG1022Z-3390	Electronics Lab A, Bench 1	2022-05-09	GOOD
+AST-0006	DC Power Supply 0-30V 5A	ELECTRONIC	Power Supply	Mastech	MS3010D-4471	Electronics Lab A, Bench 2	2021-09-30	FAIR	Fan noisy
+AST-0007	Breadboard Project Kit (1200 pcs)	ELECTRONIC	Component Kit	Velleman	KBX1200-1198	Store Room, Shelf 5	2023-07-01	GOOD	Inventory checked
+AST-0008	Arduino Uno Starter Kit	ELECTRONIC	Microcontroller Kit	Arduino	A000066-90211	Store Room, Shelf 2	2023-02-14	GOOD	3 kits in crate
+AST-0009	Raspberry Pi 4 4GB Board	ELECTRONIC	Microcontroller Kit	Raspberry Pi	RPI4-4GB-70331	Store Room, Shelf 2	2022-12-05	EXCELLENT	Case and PSU included
+AST-0010	Lab Workstation Desktop PC	COMPUTER	Computer	Dell	DT-OPX7920-3311	Computer Lab, Desk 7	2021-06-11	GOOD	Windows 10, 16GB RAM
+AST-0011	Lab Workstation Desktop PC	COMPUTER	Computer	Dell	DT-OPX7920-3312	Computer Lab, Desk 8	2021-06-11	GOOD	Windows 10, 16GB RAM
+AST-0012	Student Laptop 14 inch	COMPUTER	Computer	Lenovo	TP-E14-55021	Computer Lab, Cabinet 3	2023-04-22	EXCELLENT	Loaner laptop
+AST-0013	24 inch LCD Monitor	COMPUTER	Peripheral	LG	M2450-88120	Computer Lab, Desk 9	2020-10-03	FAIR	Dead pixel top-left
+AST-0014	USB Laser Printer	COMPUTER	Peripheral	HP	HP-M1132-66017	Office, Corner 1	2019-05-17	GOOD	Toner at 40%
+AST-0015	8-Port Network Switch	ELECTRONIC	Networking	TP-Link	TL-SG108-22114	Networking Rack, Rack 1	2022-02-28	GOOD
+AST-0016	WiFi Access Point	ELECTRONIC	Networking	Ubiquiti	UAP-AC-LITE-9123	Networking Rack, Rack 2	2022-02-28	EXCELLENT
