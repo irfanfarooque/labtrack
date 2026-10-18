@@ -29,29 +29,30 @@ java -jar target/labtrack-1.0.0.jar
 
 The shade plugin writes `Main-Class: labtrack.LabTrackApp` into the manifest, so the jar runs standalone (SQLite driver and FlatLaf included). `dependency-reduced-pom.xml` is a shade-plugin artifact — ignore it.
 
-## Source layout (49 files, ~2,500 lines)
+## Source layout (53 files, ~2,700 lines)
 
 ```
 src/main/java/labtrack/
-├── LabTrackApp.java          # main(): L&F → AppContext → seed → MainFrame
-├── model/                    # 17 files
+├── LabTrackApp.java          # main(): L&F → AppContext → seed → login gate → MainFrame
+├── model/                    # 18 files
 │   ├── Equipment.java         # abstract base (implements Borrowable, Maintainable)
 │   ├── ElectronicEquipment.java, ComputerEquipment.java
 │   ├── Borrowable.java, Maintainable.java          # interfaces
-│   ├── IssueRecord.java, MaintenanceRecord.java, Borrower.java, Category.java
+│   ├── IssueRecord.java, MaintenanceRecord.java, Borrower.java, Category.java, User.java
 │   └── Condition, EquipmentStatus, IssueStatus, MaintenanceType, MaintenanceStatus  # enums
-├── dao/                      # 5 files — all SQL, prepared statements only
-├── service/                  # 5 files — AppContext + 4 services (business rules)
+├── dao/                      # 6 files — all SQL, prepared statements only
+├── service/                  # 6 files — AppContext + 5 services (business rules, auth)
 ├── database/DatabaseManager.java                   # singleton, schema, transactions
 ├── ui/
-│   ├── MainFrame.java         # sidebar nav + CardLayout pages
+│   ├── MainFrame.java         # sidebar nav + CardLayout pages (user label + logout)
+│   ├── LoginDialog.java       # sign-in gate shown before the main window
 │   ├── panels/                # Dashboard, Inventory, Borrowing, Maintenance, Reports
 │   └── dialogs/               # FormDialog base + 5 dialogs
 ├── adapter/                   # LegacyAssetRecord, EquipmentAdapter, LegacyTsvAdapter, LegacyDataSeeder
 ├── exception/                 # LabTrackException + Validation/DuplicateRecord/OperationException
 └── util/                      # Tasks (SwingWorker), Dates, UiUtil
 src/main/resources/legacy_seed.tsv                   # 16 first-run items
-src/test/java/labtrack/       # 4 files, ~330 lines
+src/test/java/labtrack/       # 5 files, ~370 lines
 ```
 
 ## Conventions
@@ -102,4 +103,4 @@ Extend `FormDialog`: build fields with `UiUtil.formRow(...)`, implement `build()
 
 ## Size budget
 
-Current: main **2,488** lines / tests **332** (was ~4,800 before compression). The UI deliberately uses plain look-and-feel styling (no custom cell renderers, minimal decoration) to stay lean — prefer simplifying over adding visual layers.
+Current: main **2,701** lines / tests **367** (was ~4,800 before compression). The UI deliberately uses plain look-and-feel styling (no custom cell renderers, minimal decoration) to stay lean — prefer simplifying over adding visual layers.

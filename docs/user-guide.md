@@ -8,9 +8,15 @@ Screen-by-screen guide to the application, including the business rules the app 
 java -jar target/labtrack-1.0.0.jar
 ```
 
-The main window opens on the **Dashboard**. The left sidebar switches between the five screens. Everything runs locally against `~/.labtrack/labtrack.db` — no server, no internet.
+The **login screen** appears first. On the very first launch a sample account is created automatically:
 
-On the very first launch (empty database) the app imports 16 sample items from its bundled legacy export so every screen has data to show.
+| Username | Password |
+|---|---|
+| `admin` | `lab123` |
+
+Type the credentials and press **Log In** (or hit Enter). Wrong credentials show an error and clear the password field; **Exit** closes the app. After signing in, the main window opens on the **Dashboard**. The sidebar shows who is signed in and has a **Log out** button that returns to the login screen.
+
+All data lives locally in `~/.labtrack/labtrack.db` — no server, no internet. On the first launch (empty database) the app also imports 16 sample items from its bundled legacy export so every screen has data to show.
 
 ---
 

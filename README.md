@@ -1,9 +1,10 @@
 # LabTrack — Laboratory Equipment Management System
 
-A desktop application for tracking laboratory equipment, lending (issue/return), damage and maintenance, with live statistics and database-driven reports. Built with Java Swing and SQLite — single executable jar, fully offline.
+A desktop application for tracking laboratory equipment, lending (issue/return), damage and maintenance, with live statistics and database-driven reports. Built with Java Swing and SQLite — single executable jar, fully offline. Secured by a login screen with salted PBKDF2 password hashing.
 
 ## Features
 
+- **Login gate** — sign in before the app opens; salted PBKDF2 password hashing, first-run sample admin account, logout from the sidebar.
 - **Dashboard** — 6 live statistics (total, available, issued, damaged, maintenance, overdue) and a recent-activity feed.
 - **Equipment inventory** — add, edit, search, filter (category / condition / status / archived), unique asset-tag and serial-number validation, archive/restore, history-safe delete, custom categories.
 - **Issue & Return** — lend items to registered borrowers, record returns, automatic overdue tracking, duplicate-issue and invalid-state blocking, all write operations run in database transactions.
@@ -38,6 +39,14 @@ target/labtrack-1.0.0.jar
 ```bash
 java -jar target/labtrack-1.0.0.jar
 ```
+
+The app opens on a **login screen**. First run seeds a sample account:
+
+| Username | Password | Role |
+|---|---|---|
+| `admin` | `lab123` | ADMIN |
+
+The password is stored only as a salted PBKDF2 hash (never plaintext). To add accounts or change the admin password, use the `AuthService.createUser(...)` service method or re-seed after clearing the `users` table.
 
 No internet connection is required at runtime — the SQLite driver and the FlatLaf look-and-feel are bundled inside the jar.
 
@@ -87,4 +96,4 @@ src/main/resources/
 src/test/java/labtrack/  # JUnit 5 tests
 ```
 
-~2,500 lines of application code across 49 files, ~330 lines of tests.
+~2,700 lines of application code across 53 files, ~370 lines of tests.

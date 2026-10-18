@@ -36,6 +36,7 @@ class UiSmokeTest {
             findButton(frame, "Dashboard").doClick();
             try {
                 Equipment item = ctx.equipment().list(null, 0, null, null, true).get(0);
+                new labtrack.ui.LoginDialog(frame, ctx.auth()).dispose();
                 new EquipmentDialog(frame, ctx.equipment().categories(), item, true).dispose();
                 new EquipmentDialog(frame, ctx.equipment().categories(), null, true).dispose();
                 new EquipmentDialog(frame, ctx.equipment().categories(), item, false).dispose();

@@ -17,7 +17,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.time.LocalDate;
@@ -33,8 +32,12 @@ public class MainFrame extends JFrame {
     private final Map<String, Runnable> refreshers = new LinkedHashMap<>();
     private final Map<String, String> subtitles = new LinkedHashMap<>();
     private final JLabel titleLabel = UiUtil.h1(""), subtitleLabel = UiUtil.muted("");
-    public MainFrame(AppContext ctx) {
-        super("LabTrack — Laboratory Equipment Management System");
+    private Runnable logoutAction = () -> {};
+    private final String username;
+    public MainFrame(AppContext ctx) { this(ctx, null); }
+    public MainFrame(AppContext ctx, String username) {
+        super("LabTrack — Laboratory Equipment Management System" + (username == null ? "" : " — " + username));
+        this.username = username;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1024, 680));
         setSize(1280, 820);
@@ -93,13 +96,24 @@ public class MainFrame extends JFrame {
         buttons.setBorder(new EmptyBorder(10, 0, 10, 0));
         for (JButton b : navButtons.values()) buttons.add(b);
         side.add(buttons, BorderLayout.CENTER);
-        JPanel foot = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel foot = new JPanel(new BorderLayout(0, 8));
         foot.setBackground(UiUtil.SIDEBAR);
         foot.setBorder(new EmptyBorder(10, 24, 16, 24));
-        foot.add(UiUtil.label("SQLite database · works offline", 11, Font.PLAIN, UiUtil.SIDEBAR_T));
+        if (username != null) {
+            JPanel who = new JPanel(new BorderLayout(0, 6));
+            who.setBackground(UiUtil.SIDEBAR);
+            who.add(UiUtil.label("Signed in as " + username, 11, Font.BOLD, Color.WHITE), BorderLayout.NORTH);
+            JButton logout = UiUtil.btn("Log out", UiUtil.Kind.SECONDARY, () -> logoutAction.run());
+            logout.setForeground(UiUtil.SIDEBAR_T);
+            who.add(logout, BorderLayout.SOUTH);
+            foot.add(who, BorderLayout.NORTH);
+        }
+        foot.add(UiUtil.label("SQLite database · works offline", 11, Font.PLAIN, UiUtil.SIDEBAR_T), BorderLayout.SOUTH);
         side.add(foot, BorderLayout.SOUTH);
         return side;
     }
+    /** Wires what happens after the user clicks "Log out" (dispose + re-prompt, set by LabTrackApp). */
+    public void onLogout(Runnable action) { this.logoutAction = action; }
     private JPanel buildHeader() {
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(Color.WHITE);

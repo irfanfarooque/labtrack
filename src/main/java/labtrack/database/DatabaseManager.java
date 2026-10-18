@@ -68,6 +68,9 @@ public final class DatabaseManager {
                     " manufacturer TEXT, location TEXT, purchase_date TEXT," +
                     " condition TEXT NOT NULL DEFAULT 'GOOD', status TEXT NOT NULL DEFAULT 'AVAILABLE'," +
                     " notes TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now','localtime')))");
+            st.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    " username TEXT NOT NULL COLLATE NOCASE UNIQUE, password_hash TEXT NOT NULL," +
+                    " salt TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'USER')");
             st.execute("CREATE TABLE IF NOT EXISTS borrowers (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     " name TEXT NOT NULL, code TEXT NOT NULL UNIQUE, role TEXT NOT NULL DEFAULT 'STUDENT'," +
                     " email TEXT, phone TEXT)");

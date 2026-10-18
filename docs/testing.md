@@ -1,13 +1,14 @@
 # LabTrack — Testing
 
-The suite runs with the normal build — `mvn test` or `mvn clean package` — and must show **7 passing tests** before a build is considered good.
+The suite runs with the normal build — `mvn test` or `mvn clean package` — and must show **8 passing tests** before a build is considered good.
 
 ## Test files
 
 | File | Lines | Purpose |
 |---|---|---|
 | `LabTrackIntegrationTest.java` | ~195 | 5 end-to-end business-rule tests against a real temporary SQLite database |
-| `UiSmokeTest.java` | ~70 | Launches the real window and every dialog on a display; skips when headless |
+| `AuthServiceTest.java` | ~30 | Seeding, login, wrong credentials, duplicates, validation |
+| `UiSmokeTest.java` | ~70 | Launches the real window, the login dialog and every dialog on a display; skips when headless |
 | `InventorySelectionTest.java` | ~50 | Regression test for the table-stability/row-selection bug |
 | `TestDb.java` | 17 | Test database bootstrap (shared by all test classes) |
 
@@ -35,6 +36,10 @@ Ordered (`@TestMethodOrder(OrderAnnotation.class)`) because they build on shared
 4. **`damageAndMaintenanceLifecycle`** — damaged return auto-opens a damage record and locks the item; duplicate open records blocked; complete unlocks with the new condition (POOR → stays Damaged); blank resolution rejected; full maintenance cycle on a `ComputerEquipment` (created `computerType=true` and asserted as the correct subclass); damage blocked while the item is issued.
 5. **`dashboardReportsAdapterAndPersistence`** — dashboard totals match raw table counts; all 10 report specs present; Adapter maps legacy records to the right subclasses and parses TSV (comments skipped); seeding is idempotent (running it twice doesn't duplicate rows); a new row is visible through a raw JDBC connection; a second `AppContext` sees it too (**persistence across contexts = restart simulation**).
 
+## Authentication tests (`AuthServiceTest`)
+
+- Seeding is idempotent (called twice, one admin); `admin`/`lab123` logs in with role ADMIN; username lookup is case-insensitive; wrong password, unknown user, and blank fields are rejected; duplicate and invalid usernames are rejected; a second account (`bob`) can be created and used to log in.
+
 ## UI tests
 
 - **`UiSmokeTest.mainWindowAndDialogsComeUp`** — asserts:
@@ -49,7 +54,7 @@ Ordered (`@TestMethodOrder(OrderAnnotation.class)`) because they build on shared
 ## Running the tests
 
 ```bash
-mvn test                                  # all 7 tests
+mvn test                                  # all 8 tests
 mvn test -Dtest=InventorySelectionTest    # a single class
 mvn clean package                         # tests + jar in one go
 ```

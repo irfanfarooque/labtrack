@@ -53,6 +53,18 @@ created_at    TEXT NOT NULL DEFAULT (datetime('now','localtime'))
 - `type` drives the DAO when rebuilding the polymorphic hierarchy (`ElectronicEquipment` vs `ComputerEquipment`).
 - `status` is the lifecycle lock: `DAMAGED`/`MAINTENANCE` block issuing; `ARCHIVED` hides the row from normal lists.
 
+### `users`
+
+```sql
+id            INTEGER PRIMARY KEY AUTOINCREMENT
+username      TEXT NOT NULL COLLATE NOCASE UNIQUE
+password_hash TEXT NOT NULL          -- hex PBKDF2-WithHmacSHA256 (256-bit), 120k iterations
+salt          TEXT NOT NULL          -- hex 16-byte random salt, per user
+role          TEXT NOT NULL DEFAULT 'USER'   -- USER | ADMIN
+```
+
+Login accounts. The `COLLATE NOCASE UNIQUE` username means "Admin" and "admin" are the same account. Passwords are stored **only** as salted PBKDF2 hashes — plaintext never touches the database. Created and used exclusively through `UserDao`/`AuthService`; `seedDefaultUser()` populates the sample `admin` account when the table is empty.
+
 ### `borrowers`
 
 ```sql

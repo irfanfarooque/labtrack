@@ -9,9 +9,9 @@ How the application is structured, which object-oriented principles and patterns
 │ ui (MainFrame, ui.panels, ui.dialogs)                  │  Swing, EDT only
 ├────────────────────────────────────────────────────────┤
 │ service (AppContext, EquipmentService, IssueService,   │  business rules,
-│          MaintenanceService, ReportService)            │  transactions
+│          MaintenanceService, ReportService, AuthService)│  transactions, auth
 ├────────────────────────────────────────────────────────┤
-│ dao (EquipmentDao, BorrowerDao, IssueDao,              │  prepared statements,
+│ dao (EquipmentDao, BorrowerDao, IssueDao, UserDao,     │  prepared statements,
 │      MaintenanceDao, ReportDao)                        │  result mapping
 ├────────────────────────────────────────────────────────┤
 │ database (DatabaseManager)                             │  connections, schema,
@@ -88,6 +88,17 @@ LabTrackException (checked, base)
 | **Composite/strategy-lite** | `ReportService.reportSpecs()` — records holding a `Rows` lambda | adding a report = one `new ReportSpec(...)`, zero UI changes |
 | **Template** | `FormDialog` base class owns the dialog frame, buttons, validation-to-error flow; subclasses build the form and `build()` the result | every dialog shares identical open/save/cancel behaviour |
 | **Context/DI** | `AppContext` | one object wires the object graph; tests reuse it |
+| **Gate/front-controller** | `LabTrackApp.startSession(...)` — login dialog must succeed before `MainFrame` is constructed | unauthenticated users never see data; logout disposes the frame and re-runs the gate |
+
+## Authentication
+
+`AuthService` (wired in `AppContext`) guards the application:
+
+- **Hashing**: PBKDF2-WithHmacSHA256, 256-bit key, per-user 16-byte random salt, 120,000 iterations. Only the hex hash and salt are stored — never plaintext.
+- **Verification**: `MessageDigest.isEqual` compares digests in constant time; an unknown username still performs one hash so both failure paths take the same time (no user-enumeration timing signal).
+- **Seeding**: `seedDefaultUser()` creates `admin` / `lab123` (role ADMIN) only when the `users` table is empty — safe to call on every launch.
+- **Flow**: `LabTrackApp.startSession` shows `LoginDialog` (modal); on success `MainFrame` opens with the username in the sidebar and a **Log out** button wired via `onLogout(...)` that disposes the window and re-runs the gate. Errors surface as a red inline message in the dialog (never as popups) and clear the password field.
+- **Storage**: `users` table (username NOCASE-unique, password_hash, salt, role), accessed only through `UserDao`.
 
 ## Threading model
 
